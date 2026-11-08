@@ -1,0 +1,55 @@
+# ---- Gradle / Java ----
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+*.class
+*.jar
+!gradle-wrapper.jar
+*.log
+hs_err_pid*
+
+# ---- Android ----
+local.properties
+*.apk
+*.aab
+*.ap_
+*.dex
+captures/
+.cxx/
+android/app/release/
+# Signing material must never be committed
+*.jks
+*.keystore
+keystore.properties
+# Firebase config contains project identifiers
+google-services.json
+
+# ---- Secrets / local config ----
+.env
+.env.local
+*.env
+!.env.example
+
+# ---- Runtime artefacts ----
+# Local file storage for uploaded photos and signatures (Phase 4)
+uploads/
+storage/
+
+# ---- IDE ----
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+out/
+.settings/
+.classpath
+.project
+bin/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,31 @@
+# Local development database.
+#   docker compose up -d      start Postgres in the background
+#   docker compose logs -f    watch its output
+#   docker compose down       stop it (data survives)
+#   docker compose down -v    stop it AND delete the data volume
+#
+# There is deliberately no "version:" key -- it is obsolete in Compose v2
+# and prints a warning if you add it.
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: fieldtrack-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-fieldtrack}
+      POSTGRES_USER: ${DB_USERNAME:-fieldtrack}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-fieldtrack}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - fieldtrack-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # Without this, the app can start before Postgres accepts connections
+      # and fail on the first query.
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-fieldtrack} -d ${DB_NAME:-fieldtrack}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  fieldtrack-pgdata:
