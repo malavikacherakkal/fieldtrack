@@ -1,0 +1,45 @@
+# Default configuration. Every value that differs between your laptop and
+# production is read from an environment variable, with a local-dev fallback
+# after the ":". Nothing secret is ever committed here.
+spring:
+  application:
+    name: fieldtrack
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/fieldtrack}
+    username: ${DB_USERNAME:fieldtrack}
+    password: ${DB_PASSWORD:fieldtrack}
+
+  jpa:
+    # "validate" means Hibernate NEVER changes your schema -- it only checks
+    # that the tables Flyway created match the entities. Flyway owns the schema.
+    hibernate:
+      ddl-auto: validate
+    # Keeping a DB session open for the whole web request hides lazy-loading
+    # bugs and causes N+1 queries. Off by default here on purpose.
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    # Flip to DEBUG when you need to see the SQL Hibernate generates
+    # (Phase 3 review checklist: proving there is no N+1 query problem).
+    org.hibernate.SQL: ${SQL_LOG_LEVEL:INFO}
