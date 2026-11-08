@@ -30,10 +30,10 @@ jobs:
 
     steps:
       - name: Check out the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '21'
           distribution: temurin
@@ -41,7 +41,7 @@ jobs:
       # Caches the Gradle distribution and dependencies between runs,
       # turning a ~3 minute build into roughly 40 seconds.
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
 
       # The GitHub runner has a Docker daemon, which is what lets
       # Testcontainers start a real PostgreSQL for the integration tests.
@@ -53,7 +53,7 @@ jobs:
       # that is exactly when you need to read it.
       - name: Upload test report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: backend-test-results
           path: backend/build/reports/tests/test
